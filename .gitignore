@@ -32,3 +32,5 @@ scanning/
 
 #OSX system files.
 **/.DS_Store
+
+deployments/templates/tpl-config.yaml

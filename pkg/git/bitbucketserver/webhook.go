@@ -1,10 +1,5 @@
 package bitbucketserver
 
-import (
-	apiv1 "github.com/foghornci/foghorn/pkg/apis/foghornci.io/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-)
-
 type webhook struct {
 	EventKey            string      `json:"eventKey"`
 	Date                string      `json:"date"`
@@ -141,55 +136,4 @@ type change struct {
 	FromHash string `json:"fromHash"`
 	ToHash   string `json:"toHash"`
 	Type     string `json:"type"`
-}
-
-func processRepoWebhook(repoWebhook webhook, rawWebhook []byte) *apiv1.Webhook {
-	if repoWebhook.EventKey == "repo:modified" {
-		return &apiv1.Webhook{
-			ObjectMeta: metav1.ObjectMeta{
-				GenerateName: "webhook-",
-			},
-			Spec: apiv1.WebhookSpec{
-				EventType: repoWebhook.EventKey,
-				Provider:  "Bitbucket Server",
-				Payload:   string(rawWebhook),
-				Org:       repoWebhook.New.Project.Key,
-				Repo:      repoWebhook.New.Name,
-			},
-		}
-	}
-	return &apiv1.Webhook{
-		ObjectMeta: metav1.ObjectMeta{
-			GenerateName: "webhook-",
-		},
-		Spec: apiv1.WebhookSpec{
-			EventType: repoWebhook.EventKey,
-			Provider:  "Bitbucket Server",
-			Payload:   string(rawWebhook),
-			Org:       repoWebhook.Repository.Project.Key,
-			Repo:      repoWebhook.Repository.Name,
-		},
-	}
-
-}
-
-func processPRWebhook(prWebhook webhook, rawWebhook []byte) *apiv1.Webhook {
-	return &apiv1.Webhook{
-		ObjectMeta: metav1.ObjectMeta{
-			GenerateName: "webhook-",
-		},
-		Spec: apiv1.WebhookSpec{
-			EventType: prWebhook.EventKey,
-			Provider:  "Bitbucket Server",
-			URL:       prWebhook.PullRequest.Links.Self.Href,
-			Payload:   string(rawWebhook),
-			PullRequest: &apiv1.PullRequest{
-				Number: prWebhook.PullRequest.ID,
-				Org:    prWebhook.PullRequest.ToRef.Repository.Project.Key,
-				Repo:   prWebhook.PullRequest.ToRef.Repository.Name,
-				Base:   prWebhook.PullRequest.ToRef.LatestCommit,
-				Head:   prWebhook.PullRequest.FromRef.LatestCommit,
-			},
-		},
-	}
 }

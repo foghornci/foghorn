@@ -1,4 +1,4 @@
-apiVersion: foghorn.jenkins.io/v1alpha1
+apiVersion: foghorn/v1alpha1
 kind: Action
 metadata:
   name: action-sample

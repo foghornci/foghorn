@@ -19,8 +19,8 @@ import (
 	"flag"
 	"os"
 
-	foghornv1alpha1 "github.com/foghornci/foghorn/api/v1alpha1"
-	"github.com/foghornci/foghorn/controllers"
+	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn/v1alpha1"
+	"github.com/foghornci/foghorn/pkg/controllers"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"

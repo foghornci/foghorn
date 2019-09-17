@@ -1,0 +1,7 @@
+apiVersion: foghorn/v1alpha1
+kind: Action
+metadata:
+  name: action-sample
+spec:
+  # Add fields here
+  foo: bar

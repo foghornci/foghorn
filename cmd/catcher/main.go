@@ -7,10 +7,8 @@ import (
 	"os"
 	"strconv"
 
-	clientv1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghornci.io/v1"
 	"github.com/foghornci/foghorn/pkg/git/bitbucketserver"
 	"github.com/sirupsen/logrus"
-	rest "k8s.io/client-go/rest"
 )
 
 const (
@@ -50,7 +48,7 @@ func main() {
 
 	mux.Handle(o.Path, http.HandlerFunc(o.handleWebHookRequests))
 
-	logrus.Infof("webhook handler is now listening on path %s for webhooks", o.Path)
+	logrus.Infof("catcher is now listening on path %s for webhooks", o.Path)
 	if err := http.ListenAndServe(":"+strconv.Itoa(o.Port), mux); err != nil {
 		fmt.Fprintf(os.Stderr, "error: %s\n", err)
 		os.Exit(1)
@@ -87,35 +85,35 @@ func (o *WebhookOptions) isReady() bool {
 
 // handle request for pipeline runs
 func (o *WebhookOptions) handleWebHookRequests(w http.ResponseWriter, r *http.Request) {
-	gitProvider := bitbucketserver.Provider{
+	_ = bitbucketserver.Provider{
 		URL:  "bitbucket.beescloud.com",
 		Name: "bitbucketserver",
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	_, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logrus.Fatalf("error reading webhook request body: %s", err)
 	}
 
-	webhook := gitProvider.ParseWebhook(body)
+	/* 	webhook := gitProvider.ParseWebhook(body)
 
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		logrus.Fatalf("config creation failed: %s", err)
-	}
+	   	config, err := rest.InClusterConfig()
+	   	if err != nil {
+	   		logrus.Fatalf("config creation failed: %s", err)
+	   	}
 
-	client, err := clientv1.NewForConfig(config)
-	if err != nil {
-		logrus.Fatalf("client initialization failed: %s", err)
-	}
+	   	client, err := clientv1.NewForConfig(config)
+	   	if err != nil {
+	   		logrus.Fatalf("client initialization failed: %s", err)
+	   	}
 
-	webhookInterface := client.Webhooks("foghorn")
+	   	webhookInterface := client.Webhooks("foghorn")
 
-	result, err := webhookInterface.Create(webhook)
-	if err != nil {
-		logrus.Fatalf("Webhook CRD creation failed: %s", err)
-	}
-	logrus.Infof("Webhook CRD created for repo %s/%s", result.Spec.Org, result.Spec.Repo)
+	   	result, err := webhookInterface.Create(webhook)
+	   	if err != nil {
+	   		logrus.Fatalf("Webhook CRD creation failed: %s", err)
+	   	}
+	   	logrus.Infof("Webhook CRD created for repo %s/%s", result.Spec.Org, result.Spec.Repo) */
 }
 
 func (o *WebhookOptions) returnError(err error, message string, w http.ResponseWriter, r *http.Request) {

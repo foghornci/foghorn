@@ -22,10 +22,10 @@ Catcher is designed to run in a dedicated binary, while the controllers can be r
 
 The fastest way to get started hacking on Foghorn is with [ko](https://github.com/google/ko).
 
-If you take a look in `deployments`, everything should look normal except for the following field in `200-webhook-deployment.yaml`:
+If you take a look in `deployments`, everything should look normal except for the following field in `200-catcher-deployment.yaml`:
 
 ```yaml
-image: github.com/foghornci/foghorn/cmd/webhook
+image: github.com/foghornci/foghorn/cmd/catcher
 ```
 
 The magic of `ko` is that it will: 

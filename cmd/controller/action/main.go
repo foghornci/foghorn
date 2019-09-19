@@ -68,13 +68,6 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Action")
 		os.Exit(1)
 	}
-	if err = (&controllers.GitEventReconciler{
-		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("GitEvent"),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "GitEvent")
-		os.Exit(1)
-	}
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")

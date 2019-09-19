@@ -61,13 +61,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.ActionReconciler{
-		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("Action"),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "Action")
-		os.Exit(1)
-	}
 	if err = (&controllers.GitEventReconciler{
 		Client: mgr.GetClient(),
 		Log:    ctrl.Log.WithName("controllers").WithName("GitEvent"),

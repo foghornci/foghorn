@@ -24,7 +24,7 @@ import (
 	time "time"
 
 	versioned "github.com/foghornci/foghorn/pkg/client/clientset/versioned"
-	foghorn "github.com/foghornci/foghorn/pkg/client/informers/externalversions/foghorn"
+	foghornjenkinsio "github.com/foghornci/foghorn/pkg/client/informers/externalversions/foghorn.jenkins.io"
 	internalinterfaces "github.com/foghornci/foghorn/pkg/client/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -172,9 +172,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Foghorn() foghorn.Interface
+	Foghorn() foghornjenkinsio.Interface
 }
 
-func (f *sharedInformerFactory) Foghorn() foghorn.Interface {
-	return foghorn.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Foghorn() foghornjenkinsio.Interface {
+	return foghornjenkinsio.New(f, f.namespace, f.tweakListOptions)
 }

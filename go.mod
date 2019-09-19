@@ -5,6 +5,8 @@ go 1.12
 require (
 	github.com/go-logr/logr v0.1.0
 	github.com/jenkins-x/go-scm v1.5.33
+	github.com/onsi/ginkgo v1.8.0
+	github.com/onsi/gomega v1.5.0
 	github.com/sirupsen/logrus v1.4.2
 	google.golang.org/appengine v1.5.0 // indirect
 	k8s.io/api v0.0.0-20190620084959-7cf5895f2711 // indirect

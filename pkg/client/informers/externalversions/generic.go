@@ -21,7 +21,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn/v1alpha1"
+	v1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn.jenkins.io/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -52,11 +52,15 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=foghorn, Version=v1alpha1
+	// Group=foghorn.jenkins.io, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("actions"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().Actions().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("webhooks"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().Webhooks().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("actionlists"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().ActionLists().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("gitevents"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().GitEvents().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("giteventlists"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().GitEventLists().Informer()}, nil
 
 	}
 

@@ -20,8 +20,8 @@ package fake
 
 import (
 	clientset "github.com/foghornci/foghorn/pkg/client/clientset/versioned"
-	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn/v1alpha1"
-	fakefoghornv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn/v1alpha1/fake"
+	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn.jenkins.io/v1alpha1"
+	fakefoghornv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn.jenkins.io/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

@@ -25,26 +25,26 @@ import (
 	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn.jenkins.io/v1alpha1"
 )
 
-// ActionReconciler reconciles a Action object
-type ActionReconciler struct {
+// GitEventReconciler reconciles a GitEvent object
+type GitEventReconciler struct {
 	client.Client
 	Log logr.Logger
 }
 
-// +kubebuilder:rbac:groups=foghorn.jenkins.io,resources=actions,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=foghorn.jenkins.io,resources=actions/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=foghorn.jenkins.io,resources=gitevents,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=foghorn.jenkins.io,resources=gitevents/status,verbs=get;update;patch
 
-func (r *ActionReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
+func (r *GitEventReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	_ = context.Background()
-	_ = r.Log.WithValues("action", req.NamespacedName)
+	_ = r.Log.WithValues("gitevent", req.NamespacedName)
 
 	// your logic here
 
 	return ctrl.Result{}, nil
 }
 
-func (r *ActionReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *GitEventReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&foghornv1alpha1.Action{}).
+		For(&foghornv1alpha1.GitEvent{}).
 		Complete(r)
 }

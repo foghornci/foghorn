@@ -19,8 +19,8 @@ import (
 	"flag"
 	"os"
 
-	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn/v1alpha1"
-	"github.com/foghornci/foghorn/pkg/controllers"
+	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn.jenkins.io/v1alpha1"
+	"github.com/foghornci/foghorn/controllers"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -61,18 +61,18 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.WebhookReconciler{
-		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("Webhook"),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "Webhook")
-		os.Exit(1)
-	}
 	if err = (&controllers.ActionReconciler{
 		Client: mgr.GetClient(),
 		Log:    ctrl.Log.WithName("controllers").WithName("Action"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Action")
+		os.Exit(1)
+	}
+	if err = (&controllers.GitEventReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("GitEvent"),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "GitEvent")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder

@@ -19,7 +19,7 @@ limitations under the License.
 package versioned
 
 import (
-	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn/v1alpha1"
+	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn.jenkins.io/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

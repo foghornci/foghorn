@@ -2,13 +2,18 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
 
-	"github.com/foghornci/foghorn/pkg/git/bitbucketserver"
 	"github.com/sirupsen/logrus"
+	"github.com/jenkins-x/go-scm/scm"
+	"github.com/jenkins-x/go-scm/scm/driver/github"
+	apiv1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn.jenkins.io/v1alpha1"
+	clientv1alpha1 "github.com/foghornci/foghorn/pkg/client/clientset/versioned/typed/foghorn.jenkins.io/v1alpha1"
+	rest "k8s.io/client-go/rest"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 )
 
 const (
@@ -85,35 +90,40 @@ func (o *WebhookOptions) isReady() bool {
 
 // handle request for pipeline runs
 func (o *WebhookOptions) handleWebHookRequests(w http.ResponseWriter, r *http.Request) {
-	_ = bitbucketserver.Provider{
-		URL:  "bitbucket.beescloud.com",
-		Name: "bitbucketserver",
-	}
 
-	_, err := ioutil.ReadAll(r.Body)
+	githubClient := github.NewDefault()
+	parsedWebhook, err := githubClient.Webhooks.Parse(r, func(scm.Webhook)(string, error) { return "", nil})
 	if err != nil {
-		logrus.Fatalf("error reading webhook request body: %s", err)
+		logrus.Fatalf("webhook parsing failed: %s", err)
+	}
+	gitEvent := &apiv1alpha1.GitEvent{
+		Spec: apiv1alpha1.GitEventSpec{ 
+			EventType: "generic",
+			ParsedWebhook: parsedWebhook,
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			GenerateName: "gitevent-",
+		},
+	}
+	config, err := rest.InClusterConfig()
+	if err != nil {
+		logrus.Fatalf("config creation failed: %s", err)
 	}
 
-	/* 	webhook := gitProvider.ParseWebhook(body)
+	client, err := clientv1alpha1.NewForConfig(config)
+	if err != nil {
+		logrus.Fatalf("client initialization failed: %s", err)
+	}
 
-	   	config, err := rest.InClusterConfig()
-	   	if err != nil {
-	   		logrus.Fatalf("config creation failed: %s", err)
-	   	}
+	gitEventInterface := client.GitEvents("foghorn")
 
-	   	client, err := clientv1.NewForConfig(config)
-	   	if err != nil {
-	   		logrus.Fatalf("client initialization failed: %s", err)
-	   	}
+	result, err := gitEventInterface.Create(gitEvent)
+	if err != nil {
+		logrus.Fatalf("GitEvent CRD creation failed: %s", err)
+	}
 
-	   	webhookInterface := client.Webhooks("foghorn")
-
-	   	result, err := webhookInterface.Create(webhook)
-	   	if err != nil {
-	   		logrus.Fatalf("Webhook CRD creation failed: %s", err)
-	   	}
-	   	logrus.Infof("Webhook CRD created for repo %s/%s", result.Spec.Org, result.Spec.Repo) */
+	repo := result.Spec.ParsedWebhook.Repository()
+	logrus.Infof("GitEvent CRD created for repo %s/%s", repo.Name, repo.Namespace)
 }
 
 func (o *WebhookOptions) returnError(err error, message string, w http.ResponseWriter, r *http.Request) {

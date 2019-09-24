@@ -20,8 +20,4 @@ package v1alpha1
 
 type ActionExpansion interface{}
 
-type ActionListExpansion interface{}
-
 type GitEventExpansion interface{}
-
-type GitEventListExpansion interface{}

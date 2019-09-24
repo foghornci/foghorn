@@ -47,7 +47,6 @@ type Action struct {
 }
 
 // +kubebuilder:object:root=true
-// +genclient
 
 // ActionList contains a list of Action
 type ActionList struct {

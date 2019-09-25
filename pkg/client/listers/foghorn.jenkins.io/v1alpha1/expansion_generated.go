@@ -26,14 +26,6 @@ type ActionListerExpansion interface{}
 // ActionNamespaceLister.
 type ActionNamespaceListerExpansion interface{}
 
-// ActionListListerExpansion allows custom methods to be added to
-// ActionListLister.
-type ActionListListerExpansion interface{}
-
-// ActionListNamespaceListerExpansion allows custom methods to be added to
-// ActionListNamespaceLister.
-type ActionListNamespaceListerExpansion interface{}
-
 // GitEventListerExpansion allows custom methods to be added to
 // GitEventLister.
 type GitEventListerExpansion interface{}
@@ -41,11 +33,3 @@ type GitEventListerExpansion interface{}
 // GitEventNamespaceListerExpansion allows custom methods to be added to
 // GitEventNamespaceLister.
 type GitEventNamespaceListerExpansion interface{}
-
-// GitEventListListerExpansion allows custom methods to be added to
-// GitEventListLister.
-type GitEventListListerExpansion interface{}
-
-// GitEventListNamespaceListerExpansion allows custom methods to be added to
-// GitEventListNamespaceLister.
-type GitEventListNamespaceListerExpansion interface{}

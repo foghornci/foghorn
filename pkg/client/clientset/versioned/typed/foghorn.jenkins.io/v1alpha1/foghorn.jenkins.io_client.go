@@ -28,9 +28,7 @@ import (
 type FoghornV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	ActionsGetter
-	ActionListsGetter
 	GitEventsGetter
-	GitEventListsGetter
 }
 
 // FoghornV1alpha1Client is used to interact with features provided by the foghorn.jenkins.io group.
@@ -42,16 +40,8 @@ func (c *FoghornV1alpha1Client) Actions(namespace string) ActionInterface {
 	return newActions(c, namespace)
 }
 
-func (c *FoghornV1alpha1Client) ActionLists(namespace string) ActionListInterface {
-	return newActionLists(c, namespace)
-}
-
 func (c *FoghornV1alpha1Client) GitEvents(namespace string) GitEventInterface {
 	return newGitEvents(c, namespace)
-}
-
-func (c *FoghornV1alpha1Client) GitEventLists(namespace string) GitEventListInterface {
-	return newGitEventLists(c, namespace)
 }
 
 // NewForConfig creates a new FoghornV1alpha1Client for the given config.

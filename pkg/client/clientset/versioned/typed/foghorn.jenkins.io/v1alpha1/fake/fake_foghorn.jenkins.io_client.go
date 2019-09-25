@@ -32,16 +32,8 @@ func (c *FakeFoghornV1alpha1) Actions(namespace string) v1alpha1.ActionInterface
 	return &FakeActions{c, namespace}
 }
 
-func (c *FakeFoghornV1alpha1) ActionLists(namespace string) v1alpha1.ActionListInterface {
-	return &FakeActionLists{c, namespace}
-}
-
 func (c *FakeFoghornV1alpha1) GitEvents(namespace string) v1alpha1.GitEventInterface {
 	return &FakeGitEvents{c, namespace}
-}
-
-func (c *FakeFoghornV1alpha1) GitEventLists(namespace string) v1alpha1.GitEventListInterface {
-	return &FakeGitEventLists{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

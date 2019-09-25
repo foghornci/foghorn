@@ -26,12 +26,8 @@ import (
 type Interface interface {
 	// Actions returns a ActionInformer.
 	Actions() ActionInformer
-	// ActionLists returns a ActionListInformer.
-	ActionLists() ActionListInformer
 	// GitEvents returns a GitEventInformer.
 	GitEvents() GitEventInformer
-	// GitEventLists returns a GitEventListInformer.
-	GitEventLists() GitEventListInformer
 }
 
 type version struct {
@@ -50,17 +46,7 @@ func (v *version) Actions() ActionInformer {
 	return &actionInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
-// ActionLists returns a ActionListInformer.
-func (v *version) ActionLists() ActionListInformer {
-	return &actionListInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
-}
-
 // GitEvents returns a GitEventInformer.
 func (v *version) GitEvents() GitEventInformer {
 	return &gitEventInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
-}
-
-// GitEventLists returns a GitEventListInformer.
-func (v *version) GitEventLists() GitEventListInformer {
-	return &gitEventListInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

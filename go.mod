@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/go-logr/logr v0.1.0
 	github.com/jenkins-x/go-scm v1.5.33
+	github.com/json-iterator/go v1.1.7
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
 	github.com/sirupsen/logrus v1.4.2
@@ -15,3 +16,5 @@ require (
 	k8s.io/code-generator v0.0.0-20190912042602-ebc0eb3a5c23 // indirect
 	sigs.k8s.io/controller-runtime v0.2.1
 )
+
+replace github.com/jenkins-x/go-scm => github.com/wbrefvem/go-scm v1.5.1-0.20190925164711-8398556133f9

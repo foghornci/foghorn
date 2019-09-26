@@ -20,7 +20,7 @@ import (
 	"os"
 
 	foghornv1alpha1 "github.com/foghornci/foghorn/pkg/apis/foghorn.jenkins.io/v1alpha1"
-	"github.com/foghornci/foghorn/controllers"
+	"github.com/foghornci/foghorn/pkg/controllers"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"

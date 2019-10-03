@@ -16,6 +16,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"github.com/jenkins-x/go-scm/scm"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -26,6 +27,8 @@ import (
 type GitEventSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	EventType     string                `json:"eventType,omitempty"`
+	ParsedWebhook scm.WebhookSerializer `json:"parsedWebhook"`
 }
 
 // GitEventStatus defines the observed state of GitEvent
@@ -47,7 +50,6 @@ type GitEvent struct {
 }
 
 // +kubebuilder:object:root=true
-// +genclient
 
 // GitEventList contains a list of GitEvent
 type GitEventList struct {

@@ -55,12 +55,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	// Group=foghorn.jenkins.io, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("actions"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().Actions().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("actionlists"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().ActionLists().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("gitevents"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().GitEvents().Informer()}, nil
-	case v1alpha1.SchemeGroupVersion.WithResource("giteventlists"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Foghorn().V1alpha1().GitEventLists().Informer()}, nil
 
 	}
 

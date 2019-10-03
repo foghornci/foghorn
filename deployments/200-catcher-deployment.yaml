@@ -20,3 +20,9 @@ spec:
         image: github.com/foghornci/foghorn/cmd/catcher
         ports:
         - containerPort: 8080
+        env:
+          - name: HMAC_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: hmac
+                name: hmac-token

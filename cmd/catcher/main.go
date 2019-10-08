@@ -32,28 +32,42 @@ const (
 
 // WebhookOptions holds the command line arguments
 type WebhookOptions struct {
-	BindAddress string
-	Path        string
-	Port        int
-	JSONLog     bool
-	GitClient   *scm.Client
+	BindAddress   string
+	Path          string
+	Port          int
+	JSONLog       bool
+	GitClient     *scm.Client
+	FoghornClient *clientv1alpha1.FoghornV1alpha1Client
+	KubeConfig    *rest.Config
 
 	namespace string
 }
 
 func main() {
-	// Initialize git client
+
 	gitClient, err := getGitClient()
 	if err != nil {
-		logrus.Fatalf("could not initialize git client: %s", err)
+		logrus.WithError(err).Fatal("could not initialize git client: %s", err)
+	}
+
+	kubeConfig, err := rest.InClusterConfig()
+	if err != nil {
+		logrus.WithError(err).Fatal("could not initialize k8s client: %s", err)
+	}
+
+	foghornClient, err := clientv1alpha1.NewForConfig(kubeConfig)
+	if err != nil {
+		logrus.WithError(err).Fatal("could not initialize Foghorn client: %s", err)
 	}
 
 	o := WebhookOptions{
-		Path:        "/",
-		Port:        8080,
-		JSONLog:     true,
-		BindAddress: "localhost",
-		GitClient:   gitClient,
+		Path:          "/",
+		Port:          8080,
+		JSONLog:       true,
+		BindAddress:   "localhost",
+		GitClient:     gitClient,
+		KubeConfig:    kubeConfig,
+		FoghornClient: foghornClient,
 	}
 
 	if o.JSONLog {
@@ -166,23 +180,12 @@ func (o *WebhookOptions) handleAuthenticatedPost(w http.ResponseWriter, r *http.
 		},
 	}
 
-	// Get k8s config
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		logrus.Fatalf("config creation failed: %s", err)
-	}
-
-	// Initialize foghorn client
-	client, err := clientv1alpha1.NewForConfig(config)
-	if err != nil {
-		logrus.Fatalf("client initialization failed: %s", err)
-	}
-	gitEventInterface := client.GitEvents("foghorn")
+	gitEventInterface := o.FoghornClient.GitEvents("foghorn")
 
 	// Create GitEvent resource
 	result, err := gitEventInterface.Create(gitEvent)
 	if err != nil {
-		logrus.Fatalf("GitEvent CRD creation failed: %s", err)
+		logrus.WithError(err).Fatal("GitEvent CRD creation failed: %s", err)
 	}
 	repo := result.Spec.ParsedWebhook.Webhook.Repository()
 	logrus.Infof("GitEvent CRD created for repo %s/%s", repo.Name, repo.Namespace)

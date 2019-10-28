@@ -1,6 +1,6 @@
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: gitevents-admin
   namespace: foghorn
@@ -14,7 +14,7 @@ subjects:
   namespace: foghorn
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: actions-admin
   namespace: foghorn

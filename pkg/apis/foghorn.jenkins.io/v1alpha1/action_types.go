@@ -22,10 +22,36 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// ActionType defines what type of action should be taken
+type ActionType string
+
+const (
+	// CreatePipelineRun indicates that a Tekton PipelineRun should be created
+	// in response to the webhook that triggered this action.
+	CreatePipelineRun ActionType = "CreatePipelineRun"
+	// CommentOnIssue indicates that we should leave a comment on a specified
+	// issue on specified repo on a configured git provider.
+	CommentOnIssue ActionType = "CommentOnIssue"
+	// CommentOnPR indicates that we should comment on a pull request (or equivalent
+	// contstruct) for a repo on a configured git provider.
+	CommentOnPR ActionType = "CommentOnPR"
+	// LabelIssue indicates that we should label an issue on a repo on a configured
+	// git provider.
+	LabelIssue ActionType = "LabelIssue"
+	// LabelPR indicates that we should label a PR on a repo on a configured git
+	// provider
+	LabelPR ActionType = "LabelPR"
+	// MergePR indicates that a PR is ready to merge in response to an approve
+	// or lgtm event.
+	MergePR ActionType = "MergePR"
+)
+
 // ActionSpec defines the desired state of Action
 type ActionSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	Type        ActionType `json:"type"`
+	ParentEvent *GitEvent  `json:"parentEvent"`
 }
 
 // ActionStatus defines the observed state of Action

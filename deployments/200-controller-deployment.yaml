@@ -20,3 +20,13 @@ spec:
         image: github.com/foghornci/foghorn/cmd/controller
         ports:
         - containerPort: 8080
+        env:
+          - name: OAUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: oauth
+                name: oauth-token
+          - name: GIT_KIND
+            value: "stash"
+          - name: GIT_BASE_URL
+            value: "https://bitbucket.beescloud.com"
